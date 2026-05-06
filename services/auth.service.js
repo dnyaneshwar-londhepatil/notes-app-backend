@@ -58,7 +58,9 @@ export const loginUser = async ({ email, password }) => {
 
 	const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
 
-	return { accessToken, refreshToken, user };
+	const { _id, userName, userEmail } = user;
+
+	return { accessToken, refreshToken, user: { _id, userName, email: userEmail } };
 };
 
 export const refreshAccessToken = async (refreshToken) => {
