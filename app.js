@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
-app.use("/ai", aiRoutes);
+app.use("/api/ai", aiRoutes);
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB and start server
