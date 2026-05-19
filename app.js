@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import notesRoutes from "./routes/notes.route.js";
+import aiRoutes from "./routes/ai.routes.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
+app.use("/api/ai", aiRoutes);
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB and start server
