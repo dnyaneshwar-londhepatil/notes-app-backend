@@ -12,6 +12,7 @@
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
+		"@langchain/core": "^1.1.47",
 		"@langchain/openai": "^1.4.6",
 		"bcrypt": "^6.0.0",
 		"cors": "^2.8.6",
