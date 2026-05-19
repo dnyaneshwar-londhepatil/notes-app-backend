@@ -1,4 +1,4 @@
-import { summarizeNote } from "../services/ai.service";
+import { summarizeNote } from "../services/ai.service.js";
 
 export const summarize = async (req, res) => {
 	try {
