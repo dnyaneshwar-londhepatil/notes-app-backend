@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+console.log("API Key loaded:", process.env.GEMINI_API_KEY ? "✅ Yes" : "❌ No");
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel({
@@ -18,9 +20,7 @@ export const summarizeNote = async (content) => {
 
 		const result = await model.generateContent(prompt);
 
-		const response = await result.response;
-
-		return response.text();
+		return result.response.text();
 	} catch (error) {
 		console.log("Gemini Error:", error);
 		throw error;
