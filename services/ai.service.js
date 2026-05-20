@@ -1,21 +1,28 @@
-import { ChatOpenAI } from "@langchain/openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const model = new ChatOpenAI({
-	model: "gpt-4.1-mini",
-	temperature: 0.7,
-	apiKey: process.env.OPENAI_API_KEY,
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+const model = genAI.getGenerativeModel({
+	model: "gemini-1.5-flash",
 });
 
 export const summarizeNote = async (content) => {
-	const response = await model.invoke([
-		{
-			role: "system",
-			content: "You are a helpful assistant that summarizes notes.",
-		},
-		{
-			role: "user",
-			content: `Summarize the following note:\n\n${content}`,
-		},
-	]);
-	return response.content;
+	try {
+		const prompt = `
+      You are a helpful assistant that summarizes notes.
+
+      Summarize the following note:
+
+      ${content}
+    `;
+
+		const result = await model.generateContent(prompt);
+
+		const response = await result.response;
+
+		return response.text();
+	} catch (error) {
+		console.log("Gemini Error:", error);
+		throw error;
+	}
 };
