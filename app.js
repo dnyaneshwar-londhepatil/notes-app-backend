@@ -14,7 +14,6 @@ app.use(
 		origin: process.env.CORS_ORIGIN || "http://localhost:4200",
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
 	}),
 );
 
