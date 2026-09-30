@@ -3,7 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 export const model = new ChatOpenAI({
 	apiKey: process.env.OPENROUTER_API_KEY,
 
-	model: "respan/span-01-lite:free",
+	model: "nvidia/nemotron-3-super-120b-a12b:free",
 
 	configuration: {
 		baseURL: "https://openrouter.ai/api/v1",
