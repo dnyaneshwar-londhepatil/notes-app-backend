@@ -5,6 +5,7 @@ const noteSchema = new mongoose.Schema(
 		category: { type: String, required: true },
 		title: { type: String, required: true },
 		content: { type: String, required: false },
+		summarizedNotes: { type: String, required: false },
 		isPinned: { type: Boolean, default: false },
 		userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 	},
