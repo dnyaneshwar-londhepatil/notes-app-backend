@@ -1,14 +1,14 @@
 import { Note } from "../models/notes.model.js";
 import { generateEmbedding } from "./embedding.service.js";
 
-const createNoteWithEmbedding = async ({ title }) => {
+const createNoteWithEmbedding = async ({ title, content }) => {
 	const text = `${title}\n${content || ""}`;
 	const embedding = await generateEmbedding(text);
 	return embedding;
 };
 
 export const createNote = async ({ category, title, content, summarizedNotes, userId }) => {
-	const embedding = await createNoteWithEmbedding({ content });
+	const embedding = await createNoteWithEmbedding({ title, content });
 	return await Note.create({
 		category,
 		title,
