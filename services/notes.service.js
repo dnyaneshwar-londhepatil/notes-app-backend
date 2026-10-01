@@ -7,7 +7,7 @@ const createNoteWithEmbedding = async ({ title, content }) => {
 	return embedding;
 };
 
-export const createNote = async ({ category, title, content, summarizedNotes, userId }) => {
+export const createNoteService = async ({ category, title, content, summarizedNotes, userId }) => {
 	const embedding = await createNoteWithEmbedding({ title, content });
 	return await Note.create({
 		category,

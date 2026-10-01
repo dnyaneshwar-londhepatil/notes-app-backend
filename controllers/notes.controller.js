@@ -1,8 +1,8 @@
-import { createNote, deleteNoteService, getNotesByUserId, updateNoteService } from "../services/notes.service.js";
+import { createNoteService, deleteNoteService, getNotesByUserId, updateNoteService } from "../services/notes.service.js";
 
 export const createNote = async (req, res) => {
 	try {
-		const note = await createNote({ ...req.body, userId: req.user.userId });
+		const note = await createNoteService({ ...req.body, userId: req.user.userId });
 		res.status(201).json(note);
 	} catch (error) {
 		res.status(500).json({ message: error.message });
