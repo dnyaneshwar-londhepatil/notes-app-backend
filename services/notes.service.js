@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import { Note } from "../models/notes.model.js";
 import { generateEmbedding } from "./embedding.service.js";
 
@@ -42,6 +44,9 @@ export const deleteNoteService = async ({ noteId, userId }) => {
 
 export const semanticSearchNotes = async ({ query, userId }) => {
 	const queryEmbedding = await generateEmbedding(query);
+	const normalizedUserId = mongoose.Types.ObjectId.isValid(userId)
+		? new mongoose.Types.ObjectId(userId)
+		: userId;
 
 	const notes = await Note.aggregate([
 		{
@@ -51,10 +56,12 @@ export const semanticSearchNotes = async ({ query, userId }) => {
 				queryVector: queryEmbedding,
 				numCandidates: 100,
 				limit: 10,
-				filter: { 
-					userId: userId 
-				},
-			}
+			},
+		},
+		{
+			$match: {
+				userId: normalizedUserId,
+			},
 		},
 		{
 			$project: {
@@ -67,10 +74,9 @@ export const semanticSearchNotes = async ({ query, userId }) => {
 				score: {
 					$meta: "vectorSearchScore",
 				},
-			}
-		}
+			},
+		},
 	]);
 
 	return notes;
-
-}
+};
