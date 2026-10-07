@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createNote, getNotes, updateNote, deleteNote } from "../controllers/notes.controller.js";
+import { createNote, getNotes, updateNote, deleteNote, semanticSearch } from "../controllers/notes.controller.js";
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
@@ -12,5 +12,6 @@ router.post("/", createNote);
 router.get("/", getNotes);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
+router.post("/search", semanticSearch);
 
 export default router;
