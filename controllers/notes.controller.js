@@ -1,4 +1,4 @@
-import { createNoteService, deleteNoteService, getNotesByUserId, updateNoteService } from "../services/notes.service.js";
+import { createNoteService, deleteNoteService, getNotesByUserId, updateNoteService, semanticSearchNotes } from "../services/notes.service.js";
 
 export const createNote = async (req, res) => {
 	try {
@@ -43,5 +43,36 @@ export const deleteNote = async (req, res) => {
 		res.status(200).json({ message: "Note deleted successfully" });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
+	}
+};
+
+
+export const semanticSearch = async (req, res) => {
+	try {
+		const { query } = req.body;
+
+		if (!query || !query.trim()) {
+			return res.status(400).json({
+				success: false,
+				message: "Search query is required",
+			});
+		}
+
+		const notes = await semanticSearchNotes({
+			query,
+			userId: req.user.userId,
+		});
+
+		return res.status(200).json({
+			success: true,
+			results: notes,
+		});
+	} catch (error) {
+		console.error("Semantic search error:", error);
+
+		return res.status(500).json({
+			success: false,
+			message: error.message,
+		});
 	}
 };

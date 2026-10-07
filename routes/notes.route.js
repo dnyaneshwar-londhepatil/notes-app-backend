@@ -12,5 +12,6 @@ router.post("/", createNote);
 router.get("/", getNotes);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
+router.post("/search", authMiddleware, semanticSearch);
 
 export default router;
