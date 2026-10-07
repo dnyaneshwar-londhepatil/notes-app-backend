@@ -38,3 +38,39 @@ export const updateNoteService = async ({ noteId, category, title, content, summ
 export const deleteNoteService = async ({ noteId, userId }) => {
 	return await Note.findOneAndDelete({ _id: noteId, userId });
 };
+
+
+export const semanticSearchNotes = async ({ query, userId }) => {
+	const queryEmbedding = await generateEmbedding(query);
+
+	const notes = await Note.aggregate([
+		{
+			$vectorSearch: {
+				index: "vector_index",
+				path: "embedding",
+				queryVector: queryEmbedding,
+				numCandidates: 100,
+				limit: 10,
+				filter: { 
+					userId: userId 
+				},
+			}
+		},
+		{
+			$project: {
+				_id: 1,
+				title: 1,
+				content: 1,
+				category: 1,
+				isPinned: 1,
+				createdAt: 1,
+				score: {
+					$meta: "vectorSearchScore",
+				},
+			}
+		}
+	]);
+
+	return notes;
+
+}
