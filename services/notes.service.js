@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { Note } from "../models/notes.model.js";
 import { generateEmbedding } from "./embedding.service.js";
 
+const MIN_SEMANTIC_SEARCH_SCORE = 0.6;
+
 const createNoteWithEmbedding = async ({ title, content }) => {
 	const text = `${title}\n${content || ""}`;
 	const embedding = await generateEmbedding(text);
@@ -59,8 +61,16 @@ export const semanticSearchNotes = async ({ query, userId }) => {
 			},
 		},
 		{
+			$set: {
+				score: {
+					$meta: "vectorSearchScore",
+				},
+			},
+		},
+		{
 			$match: {
 				userId: normalizedUserId,
+				score: { $gte: MIN_SEMANTIC_SEARCH_SCORE },
 			},
 		},
 		{
@@ -71,9 +81,7 @@ export const semanticSearchNotes = async ({ query, userId }) => {
 				category: 1,
 				isPinned: 1,
 				createdAt: 1,
-				score: {
-					$meta: "vectorSearchScore",
-				},
+				score: 1,
 			},
 		},
 	]);
